@@ -1,6 +1,7 @@
-import { useResourceStore } from "@/stores/ResourceStore";
 import { css } from "@emotion/react";
 import { TypedIcon } from "typed-design-system";
+
+import { useResourceStore } from "@/stores/ResourceStore";
 
 const Layout = () => {
   const { currentResource, unselectResource } = useResourceStore();

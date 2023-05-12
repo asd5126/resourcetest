@@ -18,10 +18,6 @@ const LeftSideBar = () => {
         {resourceList.map(resource => (
           <Resource key={resource.id} resource={resource} />
         ))}
-        {/* <Resource title="https://lallalalaallaaalalaaalalaaalaaalalalaalalkfajlkflajflkajskdjflajsdlfasd.com" />
-        <Resource title="https://lallalalaallaaalalaaalalaaalaa.com" />
-        <Resource title="https://lallalalaallaaalala.com" />
-        <Resource title="이미지_파일_이름.jpg" /> */}
       </div>
     </div>
   );

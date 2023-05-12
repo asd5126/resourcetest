@@ -66,7 +66,5 @@ export const useResourceStore = create<ResourceState>((set, get) => ({
       })),
     }));
   },
-  currentResource: () => {
-    return get().resourceList.find(res => res.selected);
-  },
+  currentResource: () => get().resourceList.find(res => res.selected),
 }));
