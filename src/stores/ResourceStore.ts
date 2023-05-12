@@ -17,6 +17,7 @@ export type ResourceList = {
 export interface ResourceState extends ResourceList {
   addResource: (resource: ResourceType) => void;
   removeResource: (resource: ResourceType) => void;
+  editResourceName: (resource: ResourceType, name: string) => void;
   selectResource: (resource: ResourceType) => void;
   unselectResource: () => void;
   currentResource: () => ResourceType | undefined;
@@ -37,6 +38,18 @@ export const useResourceStore = create<ResourceState>((set, get) => ({
     set(state => ({
       resourceList: state.resourceList.filter(res => res !== resource),
     }));
+  },
+  editResourceName: (resource, name) => {
+    set(state => {
+      const a = state.resourceList.find(res => res === resource);
+      console.log("a", a);
+      return {
+        resourceList: state.resourceList.map(res => ({
+          ...res,
+          ...(res === resource && { name }),
+        })),
+      };
+    });
   },
   selectResource: resource => {
     set(state => ({

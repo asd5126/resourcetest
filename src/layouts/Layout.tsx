@@ -1,4 +1,4 @@
-import { useResourceStore } from "@/stores/resource";
+import { useResourceStore } from "@/stores/ResourceStore";
 import { css } from "@emotion/react";
 import { TypedIcon } from "typed-design-system";
 
@@ -17,7 +17,7 @@ const Layout = () => {
             </button>
           </div>
           <div css={mainStyle}>
-            {resource.type === "URL" && <iframe key={resource.id} src={resource.name} css={iframeStyle} />}
+            {resource.type === "URL" && <iframe key={resource.id} src={resource.name} css={iframeStyle} allowFullScreen />}
             {resource.type === "IMG" && <img src={resource.imgSrc} />}
           </div>
         </>

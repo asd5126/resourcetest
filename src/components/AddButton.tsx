@@ -1,7 +1,7 @@
 import { css } from "@emotion/react";
 import moment from "moment";
 
-import { ResourceType, useResourceStore } from "@/stores/resource";
+import { ResourceType, useResourceStore } from "@/stores/ResourceStore";
 import { useRef, useState, useEffect } from "react";
 import { getYoutubeId, readURL } from "@/helpers/validator";
 import { getYoutubeEmbedUrl } from "@/helpers/convert";
@@ -22,7 +22,6 @@ const AddButton = ({ text, type }: Props) => {
 
   const handleButton = () => {
     if (type === "URL") {
-      setInputValue("");
       setIsAddUrl(pre => !pre);
     }
 
@@ -51,6 +50,7 @@ const AddButton = ({ text, type }: Props) => {
       selected: false,
       createdAt,
     });
+    setInputValue("");
     setIsAddUrl(false);
   };
 
@@ -75,16 +75,17 @@ const AddButton = ({ text, type }: Props) => {
     }
   };
 
-  const handleClickOutside = (e: MouseEvent) => {
+  const handleClickOutside = (e: globalThis.MouseEvent) => {
     if (!inputRef.current?.contains(e.target as Node)) {
       setIsAddUrl(false);
+      inputRef.current?.value && addUrlResource();
     }
   };
 
   useEffect(() => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+  }, [inputRef.current?.value]);
 
   return (
     <>

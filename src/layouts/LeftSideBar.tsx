@@ -2,7 +2,7 @@ import { css } from "@emotion/react";
 
 import AddButton from "@/components/AddButton";
 import Resource from "@/components/Resource";
-import { useResourceStore } from "@/stores/resource";
+import { useResourceStore } from "@/stores/ResourceStore";
 
 const LeftSideBar = () => {
   const { resourceList } = useResourceStore();
