@@ -30,6 +30,7 @@ const Resource = ({ resource }: Props) => {
 
   const changeUrlResource = () => {
     if (inputRef.current?.value) {
+      setIsEdit(false);
       try {
         let name = inputRef.current?.value || "";
         if (resource.type === "URL") {
@@ -42,8 +43,6 @@ const Resource = ({ resource }: Props) => {
       } catch (error) {
         const err = error as Error;
         toast.error(err.message);
-      } finally {
-        setIsEdit(false);
       }
     }
   };

@@ -1,4 +1,5 @@
 import { Moment } from "moment";
+import { toast } from "react-toastify";
 import { create } from "zustand";
 
 export type ResourceType = {
@@ -30,6 +31,7 @@ export const initResourceData = {
 export const useResourceStore = create<ResourceState>((set, get) => ({
   ...initResourceData,
   addResource: resource => {
+    toast.success(`[${resource.name}] 리소스 추가 성공!`);
     set(state => ({
       resourceList: [resource, ...state.resourceList],
     }));

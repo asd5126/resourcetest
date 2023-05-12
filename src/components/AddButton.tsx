@@ -5,6 +5,7 @@ import { isValidHttpUrl, readURL, setValidUrl } from "@/helpers/validator";
 import { ResourceType, useResourceStore } from "@/stores/ResourceStore";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
+import { randomInteger } from "@/helpers/tool";
 
 interface Props {
   text: string;
@@ -34,45 +35,59 @@ const AddButton = ({ text, type }: Props) => {
   };
 
   const addUrlResource = () => {
-    try {
-      if (!isValidHttpUrl(inputValue)) {
-        throw new Error("유효하지 않은 URL 주소입니다");
-      }
-      const createdAt = moment();
-      const name = setValidUrl(inputValue);
+    setInputValue("");
+    setIsAddUrl(false);
+    setTimeout(() => {
+      try {
+        if (!isValidHttpUrl(inputValue)) {
+          throw new Error("유효하지 않은 URL 주소입니다");
+        }
+        if (randomInteger(0, 100) > 80) {
+          throw new Error("리소스 등록에 실패했습니다.");
+        }
+        const createdAt = moment();
+        const name = setValidUrl(inputValue);
 
-      addResource({
-        id: createdAt.valueOf() + name,
-        type,
-        name,
-        selected: false,
-        createdAt,
-      });
-    } catch (error) {
-      const err = error as Error;
-      toast.error(err.message);
-    } finally {
-      setInputValue("");
-      setIsAddUrl(false);
-    }
+        addResource({
+          id: createdAt.valueOf() + name,
+          type,
+          name,
+          selected: false,
+          createdAt,
+        });
+      } catch (error) {
+        const err = error as Error;
+        toast.error(err.message);
+      }
+    }, randomInteger(300, 1000));
   };
 
-  const addImgResource = async () => {
+  const addImgResource = () => {
     if (fileRef.current) {
       const files = fileRef.current.files;
       if (files) {
         for (let i = 0; i < files.length; i++) {
-          const name = files[i].name;
-          const createdAt = moment();
-          const imgSrc = (await readURL(files[i])) as string;
-          addResource({
-            id: createdAt.valueOf() + name,
-            type,
-            name,
-            selected: false,
-            createdAt,
-            imgSrc,
-          });
+          setTimeout(async () => {
+            try {
+              if (randomInteger(0, 100) > 80) {
+                throw new Error("리소스 등록에 실패했습니다.");
+              }
+              const name = files[i].name;
+              const createdAt = moment();
+              const imgSrc = (await readURL(files[i])) as string;
+              addResource({
+                id: createdAt.valueOf() + name,
+                type,
+                name,
+                selected: false,
+                createdAt,
+                imgSrc,
+              });
+            } catch (error) {
+              const err = error as Error;
+              toast.error(err.message);
+            }
+          }, randomInteger(300, 1000));
         }
       }
     }
