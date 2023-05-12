@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 
 import { randomInteger } from "@/helpers/tool";
-import { isValidHttpUrl, readURL, setValidUrl } from "@/helpers/validator";
+import { hasExtension, isValidHttpUrl, readURL, setValidUrl } from "@/helpers/validator";
 import { ResourceType, useResourceStore } from "@/stores/ResourceStore";
 
 interface Props {
@@ -73,7 +73,12 @@ const AddButton = ({ text, type }: Props) => {
               if (randomInteger(0, 100) > 80) {
                 throw new Error("리소스 등록에 실패했습니다.");
               }
+
               const name = files[i].name;
+              if (!hasExtension(name, [".png", ".jpg"])) {
+                throw new Error(".png, .jpg 파일만 업로드 할 수 있습니다.");
+              }
+
               const createdAt = moment();
               const src = (await readURL(files[i])) as string;
               addResource({
@@ -147,7 +152,7 @@ const AddButton = ({ text, type }: Props) => {
           type="file"
           css={fileInputStyle}
           onChange={addImgResource}
-          accept="image/jpeg, image/png"
+          accept=".png, .jpg"
           multiple
         />
       )}

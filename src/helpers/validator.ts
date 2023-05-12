@@ -1,7 +1,7 @@
 import { getYoutubeEmbedUrl } from "./convert";
 
-export const hasExtension = (fileRef: React.RefObject<HTMLInputElement>, exts: string[]) => {
-  return new RegExp(`(${exts.join("|").replace(/\./g, "\\.")})$`).test(fileRef.current ? fileRef.current.value : "");
+export const hasExtension = (fileName: string, exts: string[]) => {
+  return new RegExp(`(${exts.join("|").replace(/\./g, "\\.")})$`).test(fileName);
 };
 
 export const getYoutubeId = (url: string) => {
