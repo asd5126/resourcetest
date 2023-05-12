@@ -164,7 +164,7 @@ const buttonStyle = css`
   line-height: 14px;
 
   :hover {
-    opacity: 0.7;
+    border-color: #80808080;
   }
 `;
 

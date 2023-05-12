@@ -107,10 +107,18 @@ const ResourceWrapper = styled.div(
     flex-direction: column;
     justify-content: space-between;
     border: 1px solid white;
+    cursor: pointer;
+
+    :hover {
+      border-color: #80808080;
+    }
 
     ${selected &&
     css`
       border-color: #38a5e1;
+      :hover {
+        border-color: #38a6e1aa;
+      }
     `}
   `
 );
