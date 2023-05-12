@@ -4,7 +4,7 @@ import { create } from "zustand";
 export type ResourceType = {
   id: string;
   type: "URL" | "IMG";
-  source: string;
+  name: string;
   selected: boolean;
   createdAt: Moment;
   imgSrc?: string;

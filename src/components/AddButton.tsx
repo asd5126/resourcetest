@@ -2,7 +2,7 @@ import { css } from "@emotion/react";
 import moment from "moment";
 
 import { ResourceType, useResourceStore } from "@/stores/resource";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { getYoutubeId, readURL } from "@/helpers/validator";
 import { getYoutubeEmbedUrl } from "@/helpers/convert";
 
@@ -15,6 +15,7 @@ const AddButton = ({ text, type }: Props) => {
   const [isAddUrl, setIsAddUrl] = useState(false);
   const [inputValue, setInputValue] = useState("");
 
+  const inputRef = useRef<HTMLInputElement>(null);
   const fileRef = useRef<HTMLInputElement>(null);
 
   const { addResource } = useResourceStore();
@@ -34,25 +35,19 @@ const AddButton = ({ text, type }: Props) => {
   };
 
   const addUrlResource = () => {
-    let source = inputValue;
+    let name = inputValue;
 
     const createdAt = moment();
     const youtubeId = getYoutubeId(inputValue);
 
     if (youtubeId) {
-      source = getYoutubeEmbedUrl(youtubeId);
+      name = getYoutubeEmbedUrl(youtubeId);
     }
 
     addResource({
-      // source: "https://lallalalaallaaalalaaalalaaalaaalalalaalalkfajlkflajflkajskdjflajsdlfasd.com",
-      // source: "https://www.naver.com",
-      // source: "https://www.youtube.com/embed/xrf2nqCFtZY",
-      // source: "https://www.xappol.com",
-      // source: "https://www.netflix.com",
-      // source: "https://www.robinwieruch.de/react-libraries/",
-      id: createdAt.valueOf() + source,
+      id: createdAt.valueOf() + name,
       type,
-      source,
+      name,
       selected: false,
       createdAt,
     });
@@ -64,13 +59,13 @@ const AddButton = ({ text, type }: Props) => {
       const files = fileRef.current.files;
       if (files) {
         for (let i = 0; i < files.length; i++) {
-          const source = files[i].name;
+          const name = files[i].name;
           const createdAt = moment();
           const imgSrc = (await readURL(files[i])) as string;
           addResource({
-            id: createdAt.valueOf() + source,
+            id: createdAt.valueOf() + name,
             type,
-            source,
+            name,
             selected: false,
             createdAt,
             imgSrc,
@@ -79,6 +74,17 @@ const AddButton = ({ text, type }: Props) => {
       }
     }
   };
+
+  const handleClickOutside = (e: MouseEvent) => {
+    if (!inputRef.current?.contains(e.target as Node)) {
+      setIsAddUrl(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   return (
     <>
@@ -94,6 +100,7 @@ const AddButton = ({ text, type }: Props) => {
       {type === "URL" && isAddUrl && (
         <div css={urlStyle}>
           <input
+            ref={inputRef}
             type="text"
             css={urlInputStyle}
             onKeyDown={e => e.key === "Enter" && addUrlResource()}

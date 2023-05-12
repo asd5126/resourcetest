@@ -11,13 +11,13 @@ const Layout = () => {
       {resource && (
         <>
           <div css={topStyle}>
-            <div css={titleStyle}>{resource.source}</div>
+            <div css={titleStyle}>{resource.name}</div>
             <button type="button" css={closeBtnStyle} onClick={unselectResource}>
               <TypedIcon icon="close_19" size={15} />
             </button>
           </div>
           <div css={mainStyle}>
-            {resource.type === "URL" && <iframe key={resource.id} src={resource.source} css={iframeStyle} />}
+            {resource.type === "URL" && <iframe key={resource.id} src={resource.name} css={iframeStyle} />}
             {resource.type === "IMG" && <img src={resource.imgSrc} />}
           </div>
         </>

@@ -22,7 +22,7 @@ const Resource = ({ resource }: Props) => {
 
   return (
     <ResourceWrapper onClick={() => selectResource(resource)} selected={resource.selected}>
-      <div css={titleStyle}>{resource.source}</div>
+      <div css={titleStyle}>{resource.name}</div>
       <div css={toolStyle}>
         <button type="button" onClick={editResource}>
           <TypedIcon icon="edit_19" size={19} color={TypedColor.fromHex("#000")} />
