@@ -7,7 +7,7 @@ export type ResourceType = {
   source: string;
   selected: boolean;
   createdAt: Moment;
-  // data?: any;
+  imgSrc?: string;
 };
 
 export type ResourceList = {

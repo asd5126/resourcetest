@@ -4,33 +4,17 @@ import AddButton from "@/components/AddButton";
 import Resource from "@/components/Resource";
 import { useResourceStore } from "@/stores/resource";
 
-const sidebarWrapper = css`
-  flex: 0 0 281px;
-  border-right: 1px solid #c4c4c4;
-`;
-const topWrapper = css`
-  position: relative;
-  z-index: 1;
-  padding: 10px;
-  background: #ffffff;
-  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
-`;
-const mainWrapper = css`
-  overflow-y: auto;
-  height: calc(100% - 50px);
-`;
-
 const LeftSideBar = () => {
   const { resourceList } = useResourceStore();
 
   return (
-    <div css={sidebarWrapper}>
-      <div css={topWrapper}>
+    <div css={sidebarStyle}>
+      <div css={topStyle}>
         <AddButton text="URL 추가" type="URL" />
         <AddButton text="이미지 추가" type="IMG" />
       </div>
 
-      <div css={mainWrapper}>
+      <div css={mainStyle}>
         {resourceList.map(resource => (
           <Resource key={resource.id} resource={resource} />
         ))}
@@ -42,5 +26,25 @@ const LeftSideBar = () => {
     </div>
   );
 };
+
+const sidebarStyle = css`
+  flex: 0 0 281px;
+  border-right: 1px solid #c4c4c4;
+`;
+
+const topStyle = css`
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  z-index: 1;
+  padding: 10px;
+  background: #ffffff;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+`;
+
+const mainStyle = css`
+  overflow-y: auto;
+  height: calc(100% - 50px);
+`;
 
 export default LeftSideBar;

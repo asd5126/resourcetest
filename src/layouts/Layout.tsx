@@ -2,12 +2,36 @@ import { useResourceStore } from "@/stores/resource";
 import { css } from "@emotion/react";
 import { TypedIcon } from "typed-design-system";
 
-const layoutWrapper = css`
+const Layout = () => {
+  const { currentResource, unselectResource } = useResourceStore();
+  const resource = currentResource();
+
+  return (
+    <div css={layoutStyle}>
+      {resource && (
+        <>
+          <div css={topStyle}>
+            <div css={titleStyle}>{resource.source}</div>
+            <button type="button" css={closeBtnStyle} onClick={unselectResource}>
+              <TypedIcon icon="close_19" size={15} />
+            </button>
+          </div>
+          <div css={mainStyle}>
+            {resource.type === "URL" && <iframe key={resource.id} src={resource.source} css={iframeStyle} />}
+            {resource.type === "IMG" && <img src={resource.imgSrc} />}
+          </div>
+        </>
+      )}
+    </div>
+  );
+};
+
+const layoutStyle = css`
   width: 100%;
   overflow: hidden;
 `;
 
-const topWrapper = css`
+const topStyle = css`
   position: relative;
   z-index: 1;
   display: flex;
@@ -20,7 +44,7 @@ const topWrapper = css`
   line-height: 16px;
 `;
 
-const mainWrapper = css`
+const mainStyle = css`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -52,29 +76,5 @@ const iframeStyle = css`
   width: 100%;
   height: 100%;
 `;
-
-const Layout = () => {
-  const { currentResource, unselectResource } = useResourceStore();
-  const resource = currentResource();
-
-  return (
-    <div css={layoutWrapper}>
-      {resource && (
-        <>
-          <div css={topWrapper}>
-            <div css={titleStyle}>{resource.source}</div>
-            <button type="button" css={closeBtnStyle} onClick={unselectResource}>
-              <TypedIcon icon="close_19" size={15} />
-            </button>
-          </div>
-          <div css={mainWrapper}>
-            {resource.type === "URL" && <iframe key={resource.id} src={resource.source} css={iframeStyle} />}
-            {resource.type === "IMG" && <img src={resource.source} />}
-          </div>
-        </>
-      )}
-    </div>
-  );
-};
 
 export default Layout;
