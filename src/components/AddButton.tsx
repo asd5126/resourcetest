@@ -1,10 +1,9 @@
 import { css } from "@emotion/react";
 import moment from "moment";
 
+import { isValidHttpUrl, readURL, setValidUrl } from "@/helpers/validator";
 import { ResourceType, useResourceStore } from "@/stores/ResourceStore";
-import { useRef, useState, useEffect } from "react";
-import { getYoutubeId, readURL } from "@/helpers/validator";
-import { getYoutubeEmbedUrl } from "@/helpers/convert";
+import { useEffect, useRef, useState } from "react";
 
 interface Props {
   text: string;
@@ -34,14 +33,14 @@ const AddButton = ({ text, type }: Props) => {
   };
 
   const addUrlResource = () => {
-    let name = inputValue;
+    if (!isValidHttpUrl(inputValue)) {
+      alert("유효하지 않은 URL 주소입니다");
+      setIsAddUrl(false);
+      return;
+    }
 
     const createdAt = moment();
-    const youtubeId = getYoutubeId(inputValue);
-
-    if (youtubeId) {
-      name = getYoutubeEmbedUrl(youtubeId);
-    }
+    const name = setValidUrl(inputValue);
 
     addResource({
       id: createdAt.valueOf() + name,

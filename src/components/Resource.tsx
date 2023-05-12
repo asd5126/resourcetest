@@ -1,8 +1,9 @@
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
-import { MouseEvent, useState, useEffect, useRef } from "react";
+import { MouseEvent, useEffect, useRef, useState } from "react";
 import { TypedColor, TypedIcon } from "typed-design-system";
 
+import { isValidHttpUrl, setValidUrl } from "@/helpers/validator";
 import { ResourceType, useResourceStore } from "@/stores/ResourceStore";
 
 interface Props {
@@ -11,12 +12,14 @@ interface Props {
 
 const Resource = ({ resource }: Props) => {
   const [isEdit, setIsEdit] = useState(false);
+  const [inputValue, setInputValue] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
-  const editBtnRef = useRef<HTMLButtonElement>(null);
+
   const { selectResource, removeResource, editResourceName } = useResourceStore();
 
   const editResource = (e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>) => {
     e.stopPropagation();
+    setInputValue(resource.name);
     setIsEdit(true);
   };
   const deleteResource = (e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>) => {
@@ -24,27 +27,51 @@ const Resource = ({ resource }: Props) => {
     removeResource(resource);
   };
 
-  // const handleClickOutside = (e: globalThis.MouseEvent) => {
-  //   if (!inputRef.current?.contains(e.target as Node) && !editBtnRef.current?.contains(e.target as Node)) {
-  //     setIsEdit(false);
-  //     inputRef.current?.value && editResourceName(resource, inputRef.current?.value || "");
-  //   }
-  // };
+  const changeUrlResource = () => {
+    if (inputRef.current?.value) {
+      let name = inputRef.current?.value || "";
+      if (resource.type === "URL") {
+        if (!isValidHttpUrl(inputValue)) {
+          alert("유효하지 않은 URL 주소입니다");
+          setIsEdit(false);
+          return;
+        }
+        name = setValidUrl(inputValue);
+      }
+      editResourceName(resource, name);
+      setIsEdit(false);
+    }
+  };
 
-  // useEffect(() => {
-  //   document.addEventListener("mousedown", handleClickOutside);
-  //   return () => document.removeEventListener("mousedown", handleClickOutside);
-  // }, [inputRef.current?.value]);
+  const handleClickOutside = (e: globalThis.MouseEvent) => {
+    if (!inputRef.current?.contains(e.target as Node)) {
+      changeUrlResource();
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [inputRef.current?.value]);
 
   return (
     <ResourceWrapper onClick={() => selectResource(resource)} selected={resource.selected}>
       {isEdit ? (
-        <input type="text" ref={inputRef} css={inputStyle} defaultValue={resource.name} onClick={e => e.stopPropagation()} autoFocus />
+        <input
+          type="text"
+          ref={inputRef}
+          css={inputStyle}
+          value={inputValue}
+          onChange={e => setInputValue(e.target.value)}
+          onClick={e => e.stopPropagation()}
+          onKeyDown={e => e.key === "Enter" && changeUrlResource()}
+          autoFocus
+        />
       ) : (
         <div css={titleStyle}>{resource.name}</div>
       )}
       <div css={toolStyle}>
-        <button type="button" onClick={editResource} ref={editBtnRef}>
+        <button type="button" onClick={editResource}>
           <TypedIcon icon="edit_19" size={19} color={TypedColor.fromHex("#000")} />
         </button>
         <button type="button" onClick={deleteResource}>

@@ -40,16 +40,12 @@ export const useResourceStore = create<ResourceState>((set, get) => ({
     }));
   },
   editResourceName: (resource, name) => {
-    set(state => {
-      const a = state.resourceList.find(res => res === resource);
-      console.log("a", a);
-      return {
-        resourceList: state.resourceList.map(res => ({
-          ...res,
-          ...(res === resource && { name }),
-        })),
-      };
-    });
+    set(state => ({
+      resourceList: state.resourceList.map(res => ({
+        ...res,
+        ...(res === resource && { name }),
+      })),
+    }));
   },
   selectResource: resource => {
     set(state => ({

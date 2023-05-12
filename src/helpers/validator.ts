@@ -1,3 +1,5 @@
+import { getYoutubeEmbedUrl } from "./convert";
+
 export const hasExtension = (fileRef: React.RefObject<HTMLInputElement>, exts: string[]) => {
   return new RegExp(`(${exts.join("|").replace(/\./g, "\\.")})$`).test(fileRef.current ? fileRef.current.value : "");
 };
@@ -16,4 +18,23 @@ export const readURL = (file: File) => {
     reader.onerror = e => rej(e);
     reader.readAsDataURL(file);
   });
+};
+
+export const isValidHttpUrl = (str: string) => {
+  let url;
+  try {
+    url = new URL(str);
+  } catch (_) {
+    return false;
+  }
+  return url.protocol === "http:" || url.protocol === "https:";
+};
+
+export const setValidUrl = (url: string) => {
+  let name = url;
+  const youtubeId = getYoutubeId(name);
+  if (youtubeId) {
+    name = getYoutubeEmbedUrl(youtubeId);
+  }
+  return name;
 };
