@@ -1,4 +1,4 @@
-import { useResourceStore } from "@/stores/resource";
+import { ResourceType, useResourceStore } from "@/stores/resource";
 import { css } from "@emotion/react";
 import moment from "moment";
 
@@ -20,22 +20,36 @@ const buttonStyle = css`
 `;
 
 interface Props {
-  text?: string;
+  text: string;
+  type: ResourceType["type"];
 }
 
-const AddButton = ({ text }: Props) => {
+const AddButton = ({ text, type }: Props) => {
   const { addResource } = useResourceStore();
   return (
     <button
       type="button"
       css={buttonStyle}
-      onClick={() =>
+      onClick={() => {
+        const createdAt = moment();
+        // const source = "https://typed.do/blog-kr/how-to-make-good-usability-product/";
+        const source = "https://i.stack.imgur.com/aY1PS.png";
+
         addResource({
-          source: "https://lallalalaallaaalalaaalalaaalaaalalalaalalkfajlkflajflkajskdjflajsdlfasd.com",
+          // source: "https://lallalalaallaaalalaaalalaaalaaalalalaalalkfajlkflajflkajskdjflajsdlfasd.com",
+          // source: "https://www.naver.com",
+          // source: "https://www.youtube.com/embed/xrf2nqCFtZY",
+          // source: "https://www.xappol.com",
+          // source: "https://www.netflix.com",
+          // source: "https://www.robinwieruch.de/react-libraries/",
+          id: createdAt.valueOf() + source,
+          type,
+          source,
           selected: false,
-          createdAt: moment(),
-        })
-      }
+          createdAt,
+        });
+        console.log(moment().valueOf());
+      }}
     >
       {text}
     </button>

@@ -2,6 +2,8 @@ import { Moment } from "moment";
 import { create } from "zustand";
 
 export type ResourceType = {
+  id: string;
+  type: "URL" | "IMG";
   source: string;
   selected: boolean;
   createdAt: Moment;

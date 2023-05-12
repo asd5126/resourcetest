@@ -21,8 +21,11 @@ const topWrapper = css`
 `;
 
 const mainWrapper = css`
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 100%;
-  height: 100%;
+  height: calc(100% - 50px);
   background-color: white;
 `;
 
@@ -45,24 +48,29 @@ const closeBtnStyle = css`
   }
 `;
 
+const iframeStyle = css`
+  width: 100%;
+  height: 100%;
+`;
+
 const Layout = () => {
   const { currentResource, unselectResource } = useResourceStore();
-  const curResource = currentResource();
+  const resource = currentResource();
 
   return (
     <div css={layoutWrapper}>
-      {curResource && (
+      {resource && (
         <>
           <div css={topWrapper}>
-            <div css={titleStyle}>
-              https://lasdasdfasdfasdfasdfasdfasdasdfsdfasdfallalalaallaaalalaaalalaaalaaaldkdfsalalaalalkfajlkflajflkajskdjflajsdlfkjasdfasd...
-            </div>
-            {/* <div>...</div> */}
+            <div css={titleStyle}>{resource.source}</div>
             <button type="button" css={closeBtnStyle} onClick={unselectResource}>
               <TypedIcon icon="close_19" size={15} />
             </button>
           </div>
-          <div css={mainWrapper}></div>
+          <div css={mainWrapper}>
+            {resource.type === "URL" && <iframe key={resource.id} src={resource.source} css={iframeStyle} />}
+            {resource.type === "IMG" && <img src={resource.source} />}
+          </div>
         </>
       )}
     </div>

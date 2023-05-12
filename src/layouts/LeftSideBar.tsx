@@ -26,13 +26,13 @@ const LeftSideBar = () => {
   return (
     <div css={sidebarWrapper}>
       <div css={topWrapper}>
-        <AddButton text="URL 추가" />
-        <AddButton text="이미지 추가" />
+        <AddButton text="URL 추가" type="URL" />
+        <AddButton text="이미지 추가" type="IMG" />
       </div>
 
       <div css={mainWrapper}>
-        {resourceList.map((resource, idx) => (
-          <Resource key={idx.toString() + resource.source} resource={resource} />
+        {resourceList.map(resource => (
+          <Resource key={resource.id} resource={resource} />
         ))}
         {/* <Resource title="https://lallalalaallaaalalaaalalaaalaaalalalaalalkfajlkflajflkajskdjflajsdlfasd.com" />
         <Resource title="https://lallalalaallaaalalaaalalaaalaa.com" />
