@@ -100,9 +100,19 @@ const AddButton = ({ text, type }: Props) => {
     }
   };
 
+  const closeInput = (e: KeyboardEvent) => {
+    if (e.key === "Escape") {
+      setIsAddUrl(false);
+    }
+  };
+
   useEffect(() => {
+    document.addEventListener("keydown", closeInput);
     document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("keydown", closeInput);
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
   }, [inputRef.current?.value]);
 
   return (

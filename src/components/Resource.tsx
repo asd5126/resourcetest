@@ -53,9 +53,19 @@ const Resource = ({ resource }: Props) => {
     }
   };
 
+  const closeInput = (e: KeyboardEvent) => {
+    if (e.key === "Escape") {
+      setIsEdit(false);
+    }
+  };
+
   useEffect(() => {
+    document.addEventListener("keydown", closeInput);
     document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("keydown", closeInput);
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
   }, [inputRef.current?.value]);
 
   return (
