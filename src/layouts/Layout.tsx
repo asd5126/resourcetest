@@ -19,7 +19,7 @@ const Layout = () => {
           </div>
           <div css={mainStyle}>
             {resource.type === "URL" && <iframe key={resource.id} src={resource.name} css={iframeStyle} allowFullScreen />}
-            {resource.type === "IMG" && <img src={resource.imgSrc} />}
+            {resource.type === "IMG" && <img src={resource.imgSrc} css={imgStyle} />}
           </div>
         </>
       )}
@@ -76,6 +76,11 @@ const closeBtnStyle = css`
 const iframeStyle = css`
   width: 100%;
   height: 100%;
+`;
+
+const imgStyle = css`
+  max-width: 100%;
+  max-height: 100%;
 `;
 
 export default Layout;
