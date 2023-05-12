@@ -6,9 +6,9 @@ export type ResourceType = {
   id: string;
   type: "URL" | "IMG";
   name: string;
+  src: string;
   selected: boolean;
   createdAt: Moment;
-  imgSrc?: string;
 };
 
 export type ResourceList = {

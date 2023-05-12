@@ -18,8 +18,8 @@ const Layout = () => {
             </button>
           </div>
           <div css={mainStyle}>
-            {resource.type === "URL" && <iframe key={resource.id} src={resource.name} css={iframeStyle} allowFullScreen />}
-            {resource.type === "IMG" && <img src={resource.imgSrc} css={imgStyle} />}
+            {resource.type === "URL" && <iframe key={resource.id} src={resource.src} css={iframeStyle} allowFullScreen />}
+            {resource.type === "IMG" && <img src={resource.src} css={imgStyle} />}
           </div>
         </>
       )}

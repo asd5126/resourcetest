@@ -3,9 +3,8 @@ import styled from "@emotion/styled";
 import { MouseEvent, useEffect, useRef, useState } from "react";
 import { TypedColor, TypedIcon } from "typed-design-system";
 
-import { isValidHttpUrl, setValidUrl } from "@/helpers/validator";
+import { setValidUrl } from "@/helpers/validator";
 import { ResourceType, useResourceStore } from "@/stores/ResourceStore";
-import { toast } from "react-toastify";
 
 interface Props {
   resource: ResourceType;
@@ -30,20 +29,12 @@ const Resource = ({ resource }: Props) => {
 
   const changeUrlResource = () => {
     if (inputRef.current?.value) {
-      setIsEdit(false);
-      try {
-        let name = inputRef.current?.value || "";
-        if (resource.type === "URL") {
-          if (!isValidHttpUrl(inputValue)) {
-            throw new Error("유효하지 않은 URL 주소입니다");
-          }
-          name = setValidUrl(inputValue);
-        }
-        editResourceName(resource, name);
-      } catch (error) {
-        const err = error as Error;
-        toast.error(err.message);
+      let name = inputRef.current?.value || "";
+      if (resource.type === "URL") {
+        name = setValidUrl(inputValue);
       }
+      setIsEdit(false);
+      editResourceName(resource, name);
     }
   };
 

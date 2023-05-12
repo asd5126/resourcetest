@@ -1,11 +1,11 @@
 import { css } from "@emotion/react";
 import moment from "moment";
-
-import { isValidHttpUrl, readURL, setValidUrl } from "@/helpers/validator";
-import { ResourceType, useResourceStore } from "@/stores/ResourceStore";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
+
 import { randomInteger } from "@/helpers/tool";
+import { isValidHttpUrl, readURL, setValidUrl } from "@/helpers/validator";
+import { ResourceType, useResourceStore } from "@/stores/ResourceStore";
 
 interface Props {
   text: string;
@@ -52,6 +52,7 @@ const AddButton = ({ text, type }: Props) => {
           id: createdAt.valueOf() + name,
           type,
           name,
+          src: name,
           selected: false,
           createdAt,
         });
@@ -74,14 +75,14 @@ const AddButton = ({ text, type }: Props) => {
               }
               const name = files[i].name;
               const createdAt = moment();
-              const imgSrc = (await readURL(files[i])) as string;
+              const src = (await readURL(files[i])) as string;
               addResource({
                 id: createdAt.valueOf() + name,
                 type,
                 name,
+                src,
                 selected: false,
                 createdAt,
-                imgSrc,
               });
             } catch (error) {
               const err = error as Error;
