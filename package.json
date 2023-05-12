@@ -12,9 +12,11 @@
   "dependencies": {
     "@emotion/core": "^10.3.1",
     "@emotion/react": "^11.11.0",
+    "moment": "^2.29.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "typed-design-system": "^0.0.228"
+    "typed-design-system": "^0.0.228",
+    "zustand": "^4.3.8"
   },
   "devDependencies": {
     "@emotion/babel-plugin": "^11.11.0",
