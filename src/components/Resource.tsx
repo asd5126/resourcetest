@@ -5,6 +5,7 @@ import { TypedColor, TypedIcon } from "typed-design-system";
 
 import { isValidHttpUrl, setValidUrl } from "@/helpers/validator";
 import { ResourceType, useResourceStore } from "@/stores/ResourceStore";
+import { toast } from "react-toastify";
 
 interface Props {
   resource: ResourceType;
@@ -29,17 +30,21 @@ const Resource = ({ resource }: Props) => {
 
   const changeUrlResource = () => {
     if (inputRef.current?.value) {
-      let name = inputRef.current?.value || "";
-      if (resource.type === "URL") {
-        if (!isValidHttpUrl(inputValue)) {
-          alert("유효하지 않은 URL 주소입니다");
-          setIsEdit(false);
-          return;
+      try {
+        let name = inputRef.current?.value || "";
+        if (resource.type === "URL") {
+          if (!isValidHttpUrl(inputValue)) {
+            throw new Error("유효하지 않은 URL 주소입니다");
+          }
+          name = setValidUrl(inputValue);
         }
-        name = setValidUrl(inputValue);
+        editResourceName(resource, name);
+      } catch (error) {
+        const err = error as Error;
+        toast.error(err.message);
+      } finally {
+        setIsEdit(false);
       }
-      editResourceName(resource, name);
-      setIsEdit(false);
     }
   };
 

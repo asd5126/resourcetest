@@ -4,6 +4,7 @@ import moment from "moment";
 import { isValidHttpUrl, readURL, setValidUrl } from "@/helpers/validator";
 import { ResourceType, useResourceStore } from "@/stores/ResourceStore";
 import { useEffect, useRef, useState } from "react";
+import { toast } from "react-toastify";
 
 interface Props {
   text: string;
@@ -33,24 +34,27 @@ const AddButton = ({ text, type }: Props) => {
   };
 
   const addUrlResource = () => {
-    if (!isValidHttpUrl(inputValue)) {
-      alert("유효하지 않은 URL 주소입니다");
+    try {
+      if (!isValidHttpUrl(inputValue)) {
+        throw new Error("유효하지 않은 URL 주소입니다");
+      }
+      const createdAt = moment();
+      const name = setValidUrl(inputValue);
+
+      addResource({
+        id: createdAt.valueOf() + name,
+        type,
+        name,
+        selected: false,
+        createdAt,
+      });
+    } catch (error) {
+      const err = error as Error;
+      toast.error(err.message);
+    } finally {
+      setInputValue("");
       setIsAddUrl(false);
-      return;
     }
-
-    const createdAt = moment();
-    const name = setValidUrl(inputValue);
-
-    addResource({
-      id: createdAt.valueOf() + name,
-      type,
-      name,
-      selected: false,
-      createdAt,
-    });
-    setInputValue("");
-    setIsAddUrl(false);
   };
 
   const addImgResource = async () => {
