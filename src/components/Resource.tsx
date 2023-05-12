@@ -75,13 +75,16 @@ const Resource = ({ resource }: Props) => {
       ) : (
         <div css={titleStyle}>{resource.name}</div>
       )}
-      <div css={toolStyle}>
-        <button type="button" onClick={editResource}>
-          <TypedIcon icon="edit_19" size={19} color={TypedColor.fromHex("#000")} />
-        </button>
-        <button type="button" onClick={deleteResource}>
-          <TypedIcon icon="trash_19" size={19} color={TypedColor.fromHex("#000")} />
-        </button>
+      <div css={botStyle}>
+        <TypedIcon icon={resource.type === "URL" ? "url" : "img"} size={15} />
+        <div css={toolStyle}>
+          <button type="button" onClick={editResource}>
+            <TypedIcon icon="edit_19" size={19} color={TypedColor.fromHex("#000")} />
+          </button>
+          <button type="button" onClick={deleteResource}>
+            <TypedIcon icon="trash_19" size={19} color={TypedColor.fromHex("#000")} />
+          </button>
+        </div>
       </div>
     </ResourceWrapper>
   );
@@ -151,6 +154,11 @@ const inputStyle = css`
   line-height: 16px;
   outline-width: 0;
   padding: 8px;
+`;
+
+const botStyle = css`
+  display: flex;
+  justify-content: space-between;
 `;
 
 export default Resource;

@@ -10,4 +10,6 @@
 
 - Typed Design System 으로 icon 사용
   - 해당 라이브러리가 @emotion/core 에 종속되어 있기에 css in js 는 emotion 을 사용
--
+  - tailwindcss 설치는 했지만, reset css 용도로만 사용
+- Zustand 로 Global 상태관리
+- React Toastify 라이브러리로 토스트 메시지 설정
