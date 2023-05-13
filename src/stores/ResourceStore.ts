@@ -37,7 +37,7 @@ export const useResourceStore = create(
     addResource: resource => {
       toast.success(`[${resource.name}] ${getTypeResource(resource.type)} 추가에 성공했습니다!`);
       set(state => {
-        state.resourceList.push(resource);
+        state.resourceList.unshift(resource);
       });
     },
     removeResource: resource => {
