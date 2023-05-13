@@ -1,12 +1,13 @@
 import { css } from "@emotion/react";
 import moment from "moment";
-import { useEffect, useRef, useState } from "react";
+import { memo, useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
+import { shallow } from "zustand/shallow";
 
+import { getTypeResource } from "@/helpers/convert";
 import { randomInteger } from "@/helpers/tool";
 import { hasExtension, isValidHttpUrl, readURL, setValidUrl } from "@/helpers/validator";
 import { ResourceType, useResourceStore } from "@/stores/ResourceStore";
-import { getTypeResource } from "@/helpers/convert";
 
 interface Props {
   text: string;
@@ -20,7 +21,7 @@ const AddButton = ({ text, type }: Props) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const fileRef = useRef<HTMLInputElement>(null);
 
-  const { addResource } = useResourceStore();
+  const [addResource] = useResourceStore(state => [state.addResource], shallow);
 
   const handleButton = () => {
     if (type === "URL") {
@@ -77,7 +78,6 @@ const AddButton = ({ text, type }: Props) => {
         type,
         name,
         src: name,
-        selected: false,
         createdAt,
       });
     });
@@ -112,7 +112,6 @@ const AddButton = ({ text, type }: Props) => {
             type,
             name,
             src,
-            selected: false,
             createdAt,
           });
         });
@@ -224,4 +223,4 @@ const fileInputStyle = css`
   display: none;
 `;
 
-export default AddButton;
+export default memo(AddButton);

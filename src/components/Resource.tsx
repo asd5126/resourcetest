@@ -1,21 +1,26 @@
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
-import { MouseEvent, useEffect, useRef, useState } from "react";
+import { memo, MouseEvent, useEffect, useRef, useState } from "react";
 import { TypedColor, TypedIcon } from "typed-design-system";
+import { shallow } from "zustand/shallow";
 
 import { setValidUrl } from "@/helpers/validator";
 import { ResourceType, useResourceStore } from "@/stores/ResourceStore";
 
 interface Props {
   resource: ResourceType;
+  isSelected: boolean;
 }
 
-const Resource = ({ resource }: Props) => {
+const Resource = ({ resource, isSelected }: Props) => {
   const [isEdit, setIsEdit] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const { selectResource, removeResource, editResourceName } = useResourceStore();
+  const [selectResource, removeResource, editResourceName] = useResourceStore(
+    state => [state.selectResource, state.removeResource, state.editResourceName],
+    shallow
+  );
 
   const editResource = (e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>) => {
     e.stopPropagation();
@@ -61,7 +66,7 @@ const Resource = ({ resource }: Props) => {
   }, [inputRef.current?.value]);
 
   return (
-    <ResourceWrapper onClick={() => selectResource(resource)} selected={resource.selected}>
+    <ResourceWrapper onClick={() => selectResource(resource)} isSelected={isSelected}>
       {isEdit ? (
         <input
           type="text"
@@ -92,7 +97,7 @@ const Resource = ({ resource }: Props) => {
 };
 
 const ResourceWrapper = styled.div(
-  ({ selected }: { selected: boolean }) => css`
+  ({ isSelected }: { isSelected: boolean }) => css`
     height: 90px;
     background: #ffffff;
     border-radius: 10px;
@@ -108,7 +113,7 @@ const ResourceWrapper = styled.div(
       border-color: #80808080;
     }
 
-    ${selected &&
+    ${isSelected &&
     css`
       border-color: #38a5e1;
       :hover {
@@ -162,4 +167,4 @@ const botStyle = css`
   justify-content: space-between;
 `;
 
-export default Resource;
+export default memo(Resource);

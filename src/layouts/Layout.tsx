@@ -1,25 +1,25 @@
 import { css } from "@emotion/react";
 import { TypedIcon } from "typed-design-system";
+import { shallow } from "zustand/shallow";
 
 import { useResourceStore } from "@/stores/ResourceStore";
 
 const Layout = () => {
-  const { currentResource, unselectResource } = useResourceStore();
-  const resource = currentResource();
+  const [selectedResource, unselectResource] = useResourceStore(state => [state.selectedResource, state.unselectResource], shallow);
 
   return (
     <div css={layoutStyle}>
-      {resource && (
+      {selectedResource && (
         <>
           <div css={topStyle}>
-            <div css={titleStyle}>{resource.name}</div>
+            <div css={titleStyle}>{selectedResource.name}</div>
             <button type="button" css={closeBtnStyle} onClick={unselectResource}>
               <TypedIcon icon="close_19" size={15} />
             </button>
           </div>
           <div css={mainStyle}>
-            {resource.type === "URL" && <iframe key={resource.id} src={resource.src} css={iframeStyle} allowFullScreen />}
-            {resource.type === "IMG" && <img src={resource.src} css={imgStyle} />}
+            {selectedResource.type === "URL" && <iframe key={selectedResource.id} src={selectedResource.src} css={iframeStyle} allowFullScreen />}
+            {selectedResource.type === "IMG" && <img src={selectedResource.src} css={imgStyle} />}
           </div>
         </>
       )}

@@ -1,11 +1,12 @@
 import { css } from "@emotion/react";
+import { shallow } from "zustand/shallow";
 
 import AddButton from "@/components/AddButton";
 import Resource from "@/components/Resource";
 import { useResourceStore } from "@/stores/ResourceStore";
 
 const LeftSideBar = () => {
-  const { resourceList } = useResourceStore();
+  const [resourceList, selectedResource] = useResourceStore(state => [state.resourceList, state.selectedResource], shallow);
 
   return (
     <div css={sidebarStyle}>
@@ -16,7 +17,7 @@ const LeftSideBar = () => {
 
       <div css={mainStyle}>
         {resourceList.map(resource => (
-          <Resource key={resource.id} resource={resource} />
+          <Resource key={resource.id} resource={resource} isSelected={resource.id === selectedResource?.id} />
         ))}
       </div>
     </div>

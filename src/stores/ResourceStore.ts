@@ -1,6 +1,7 @@
 import { Moment } from "moment";
 import { toast } from "react-toastify";
 import { create } from "zustand";
+import { immer } from "zustand/middleware/immer";
 
 import { getTypeResource } from "@/helpers/convert";
 
@@ -9,12 +10,12 @@ export type ResourceType = {
   type: "URL" | "IMG";
   name: string;
   src: string;
-  selected: boolean;
   createdAt: Moment;
 };
 
 export type ResourceList = {
   resourceList: ResourceType[];
+  selectedResource?: ResourceType;
 };
 
 export interface ResourceState extends ResourceList {
@@ -23,50 +24,44 @@ export interface ResourceState extends ResourceList {
   editResourceName: (resource: ResourceType, name: string) => void;
   selectResource: (resource: ResourceType) => void;
   unselectResource: () => void;
-  currentResource: () => ResourceType | undefined;
 }
 
 export const initResourceData = {
   resourceList: [],
+  selectedResource: undefined,
 };
 
-export const useResourceStore = create<ResourceState>((set, get) => ({
-  ...initResourceData,
-  addResource: resource => {
-    toast.success(`[${resource.name}] ${getTypeResource(resource.type)} 추가에 성공했습니다!`);
-    set(state => ({
-      resourceList: [resource, ...state.resourceList],
-    }));
-  },
-  removeResource: resource => {
-    set(state => ({
-      resourceList: state.resourceList.filter(res => res !== resource),
-    }));
-  },
-  editResourceName: (resource, name) => {
-    set(state => ({
-      resourceList: state.resourceList.map(res => ({
-        ...res,
-        ...(res === resource && { name }),
-      })),
-    }));
-  },
-  selectResource: resource => {
-    set(state => ({
-      resourceList: state.resourceList.map(res => ({
-        ...res,
-        selected: false,
-        ...(res === resource && { selected: true }),
-      })),
-    }));
-  },
-  unselectResource: () => {
-    set(state => ({
-      resourceList: state.resourceList.map(res => ({
-        ...res,
-        selected: false,
-      })),
-    }));
-  },
-  currentResource: () => get().resourceList.find(res => res.selected),
-}));
+export const useResourceStore = create(
+  immer<ResourceState>(set => ({
+    ...initResourceData,
+    addResource: resource => {
+      toast.success(`[${resource.name}] ${getTypeResource(resource.type)} 추가에 성공했습니다!`);
+      set(state => {
+        state.resourceList.push(resource);
+      });
+    },
+    removeResource: resource => {
+      set(state => {
+        state.resourceList = state.resourceList.filter(res => res.id !== resource.id);
+        state.selectedResource = undefined;
+      });
+    },
+    editResourceName: (resource, name) => {
+      set(state => {
+        const curResource = state.resourceList.find(res => res.id === resource.id);
+        if (curResource?.name) {
+          curResource.name = name;
+        }
+        if (state.selectedResource) {
+          state.selectedResource.name = name;
+        }
+      });
+    },
+    selectResource: resource => {
+      set({ selectedResource: resource });
+    },
+    unselectResource: () => {
+      set({ selectedResource: undefined });
+    },
+  }))
+);
