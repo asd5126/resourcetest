@@ -18,6 +18,8 @@
 - Typed Design System 으로 icon 사용
   - 해당 라이브러리가 @emotion/core 에 종속되어 있기에 css in js 는 emotion 을 사용
   - tailwindcss 설치는 했지만, reset css 용도로만 사용
+- Immer + Zustand 를 활용한 불변성 관리
+- Zustand shallow 활용하여 렌더링 최적화
 
 ## 데모 배포
 
