@@ -2,6 +2,8 @@ import { Moment } from "moment";
 import { toast } from "react-toastify";
 import { create } from "zustand";
 
+import { getTypeResource } from "@/helpers/convert";
+
 export type ResourceType = {
   id: string;
   type: "URL" | "IMG";
@@ -31,7 +33,7 @@ export const initResourceData = {
 export const useResourceStore = create<ResourceState>((set, get) => ({
   ...initResourceData,
   addResource: resource => {
-    toast.success(`[${resource.name}] 리소스 추가 성공!`);
+    toast.success(`[${resource.name}] ${getTypeResource(resource.type)} 추가에 성공했습니다!`);
     set(state => ({
       resourceList: [resource, ...state.resourceList],
     }));

@@ -22,6 +22,7 @@ const Resource = ({ resource }: Props) => {
     setInputValue(resource.name);
     setIsEdit(true);
   };
+
   const deleteResource = (e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>) => {
     e.stopPropagation();
     removeResource(resource);
