@@ -43,7 +43,9 @@ export const useResourceStore = create(
     removeResource: resource => {
       set(state => {
         state.resourceList = state.resourceList.filter(res => res.id !== resource.id);
-        state.selectedResource = undefined;
+        if (state.selectedResource?.id === resource.id) {
+          state.selectedResource = undefined;
+        }
       });
     },
     editResourceName: (resource, name) => {
@@ -52,16 +54,20 @@ export const useResourceStore = create(
         if (curResource?.name) {
           curResource.name = name;
         }
-        if (state.selectedResource) {
+        if (state.selectedResource?.id === resource.id) {
           state.selectedResource.name = name;
         }
       });
     },
     selectResource: resource => {
-      set({ selectedResource: resource });
+      set(state => {
+        state.selectedResource = resource;
+      });
     },
     unselectResource: () => {
-      set({ selectedResource: undefined });
+      set(state => {
+        state.selectedResource = undefined;
+      });
     },
   }))
 );
