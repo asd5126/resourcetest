@@ -12,7 +12,14 @@ const Layout = () => {
       {selectedResource && (
         <>
           <div css={topStyle}>
-            <div css={titleStyle}>{selectedResource.name}</div>
+            <div css={titleStyle}>
+              {selectedResource.name}
+              {selectedResource.type === "URL" && (
+                <a href={selectedResource.src} target="_blank">
+                  링크
+                </a>
+              )}
+            </div>
             <button type="button" css={closeBtnStyle} onClick={unselectResource}>
               <TypedIcon icon="close_19" size={15} />
             </button>
