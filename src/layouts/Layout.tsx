@@ -15,7 +15,7 @@ const Layout = () => {
             <div css={titleStyle}>
               {selectedResource.name}
               {selectedResource.type === "URL" && (
-                <a href={selectedResource.src} target="_blank">
+                <a css={linkStyle} href={selectedResource.src} target="_blank">
                   링크
                 </a>
               )}
@@ -59,6 +59,15 @@ const mainStyle = css`
   width: 100%;
   height: calc(100% - 50px);
   background-color: white;
+`;
+
+const linkStyle = css`
+  color: #0969da;
+  text-decoration: none;
+  margin-left: 10px;
+  :hover {
+    text-decoration: underline;
+  }
 `;
 
 const titleStyle = css`
