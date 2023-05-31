@@ -2,7 +2,6 @@
 
 ## 개요
 
-- [Typed FE 기술 과제](https://businesscanvas.notion.site/Typed-Frontend-Engineer-80262b23eab849d3a177acc5e5069269)
 - 리소스 관리를 위한 프로젝트
 
 ## 목적
