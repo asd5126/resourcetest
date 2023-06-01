@@ -19,6 +19,7 @@
   - tailwindcss 설치는 했지만, reset css 용도로만 사용
 - Immer + Zustand 를 활용한 불변성 관리
 - Zustand shallow 활용하여 렌더링 최적화
+- Zustand Persist 활용하여 localStorage 저장 자동화
 
 ## 데모 배포
 

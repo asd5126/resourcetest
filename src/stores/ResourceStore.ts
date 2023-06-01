@@ -73,7 +73,7 @@ export const useResourceStore = create(
       },
     })),
     {
-      name: "29cm-cart-storage",
+      name: "resource-list-storage",
       storage: createJSONStorage(() => localStorage),
     }
   )
